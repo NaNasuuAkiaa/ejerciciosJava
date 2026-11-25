@@ -1,3 +1,5 @@
+//hecho como trabajo de clase entre cuatro personas siguiendo las reglas del profesor del juego
+
 /*
 hay tres jugadores, dos oficiales y la banca.
 cada jugador empieza con 100 euros, la banca tiene dinero indefinido
