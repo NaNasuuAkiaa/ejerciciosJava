@@ -1,3 +1,5 @@
+//primer trabajo de clase en grupo
+
 //un cine necesita un programa para contorlar la venta de entradas de una sesion
 //comienza preguntando cuantas localidades tiene disponibles la sala
 //cada cliente indicara su nombre, su edad y el numero de entradas
