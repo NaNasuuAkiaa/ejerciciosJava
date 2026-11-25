@@ -1,12 +1,69 @@
+//la logica para moverse está hecha por gemini, y no me gusta mucho como funciona, pero tampoco buscaba eso. la dejo implementada para moverse un poco sin tener que andar poniendo coordenadas
+//la prueba de concepto era simplemente renderizar la esfera y creo que se ha quedado muy conseguido
+
+import java.util.Scanner;
+
 public class esfera {
 	public static void main(String args[]) {
 		int RADIO = 25;
 		int[][][] esfera = new int[RADIO * 2 + 1][RADIO * 2 + 1][RADIO * 2 + 1];
 		esfera = generarEsfera(esfera, RADIO);
 		// debugporcapas(esfera, 10);
-		char[][] pantalla = new char[RADIO * 2 + 1][RADIO * 2 + 1];
-		pantalla = aplanarPantalla(esfera, RADIO);
-		debugimprimirpantalla(pantalla);
+
+		double luzX = 1.0;
+		double luzY = -1.0;
+		double luzZ = 1.0;
+		double paso = 0.25;
+
+		Scanner sc = new Scanner(System.in);
+		String entrada;
+
+		do {
+			char[][] pantalla = aplanarPantalla(esfera, RADIO, luzX, luzY, luzZ);
+			debugimprimirpantalla(pantalla);
+			System.out.println("Luz (" + luzX + ", " + luzY + ", " + luzZ + ") - [W/A/S/D mover, Q salir]: ");
+			entrada = sc.nextLine().trim().toLowerCase();
+
+			if (entrada.equals("a")) {
+				luzZ -= paso;
+				if (luzZ < -1.0) {
+					luzZ = -1.0;
+				}
+				luzY -= paso * 0.5;
+				if (luzY < -1.0) {
+					luzY = -1.0;
+				}
+			} else if (entrada.equals("d")) {
+				luzZ += paso;
+				if (luzZ > 1.0) {
+					luzZ = 1.0;
+				}
+				luzY += paso * 0.5;
+				if (luzY > 1.0) {
+					luzY = 1.0;
+				}
+			} else if (entrada.equals("w")) {
+				luzX -= paso;
+				if (luzX < -1.0) {
+					luzX = -1.0;
+				}
+				luzY += paso * 0.5;
+				if (luzY > 1.0) {
+					luzY = 1.0;
+				}
+			} else if (entrada.equals("s")) {
+				luzX += paso;
+				if (luzX > 1.0) {
+					luzX = 1.0;
+				}
+				luzY -= paso * 0.5;
+				if (luzY < -1.0) {
+					luzY = -1.0;
+				}
+			}
+		} while (!entrada.equals("q"));
+
+		sc.close();
 	}
 
 	public static int[][][] generarEsfera(int[][][] e, int r) {
@@ -25,7 +82,7 @@ public class esfera {
 		return e;
 	}
 
-	public static char[][] aplanarPantalla(int[][][] e, int r) {
+	public static char[][] aplanarPantalla(int[][][] e, int r, double luzX, double luzY, double luzZ) {
 		int total = e.length;
 		char[][] pantalla = new char[total][total];
 
@@ -38,11 +95,6 @@ public class esfera {
 		double ASPECT_RATIO = 0.47393364928;
 		// este numero viene del ratio de la fuente del cmd de windows, que es 1:2.11
 		// para que se vea esférico, el eje y se multiplica por este factor
-
-		//(-1 , 1)
-		double luzX = 1.0;
-		double luzY = -1.0;
-		double luzZ = 1.0;
 
 		// Normalizar el vector de luz para que su magnitud sea 1
 		double longitudLuz = sqrt(luzX * luzX + luzY * luzY + luzZ * luzZ);
